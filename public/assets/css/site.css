@@ -187,6 +187,7 @@ body .pages-container .payment-status ul {
 
 body .pages-container .payment-status ul > li {
   margin-bottom: 15px;
+  word-break: break-word;
 }
 
 body .pages-container .payment-status .qr-code svg {
@@ -214,4 +215,20 @@ body .pages-container .payment-status .progress {
 body .pages-container .payment-status .progress-bar {
   transition: width 2s ease;
   box-shadow: 8px 0px 15px 7px #007bff;
+}
+
+
+body .pages-container .page-2 .form .calculator label {
+  width: 300px;
+}
+
+body .pages-container .page-2 .form .calculator label {
+  width: 300px;
+  display: inline-block;
+  margin-left: 15px;
+}
+
+body .pages-container .page-2 .form .calculator input {
+  display: inline-block;
+  width: 150px;
 }

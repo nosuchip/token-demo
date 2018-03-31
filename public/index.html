@@ -42,7 +42,7 @@
     </div>
 
     <div class="pages-container">
-      <article class="page page-1" data-page="1">
+      <article class="page page-1" data-page="1" data-bind="visible: currentPage() == 1">
         <div class="banner-text">
           <h1>Welcome to <b>AsiaToken</b></h1>
           <p>The <b>future</b> begins here and now.<br/>Become a part of it. Become its <b>creator</b>.</p>
@@ -54,7 +54,7 @@
         </div>
       </article>
 
-      <article class="page page-2" data-page="2">
+      <article class="page page-2" data-page="2" data-bind="visible: currentPage() == 2">
         <div class="banner-text">
           <h1>Prepare order</h1>
 
@@ -69,12 +69,10 @@
               <input type="text" class="form-control" id="tokens-amount" placeholder="Tokens amount you want to purchase"
                 data-bind="textInput: amountTokens, css: {error: amountTokens() && !isAmountValid()}">
             </div>
-            <div class="form-group row">
-              <label for="estimated-ethers-amount" class="col-lg-4 col-form-label">Amount of ETH to send:</label>
-              <div class="col-lg-8">
-                <input type="text" readonly class="form-control-plaintext" id="estimated-ethers-amount"
-                  data-bind="value: amountEthers">
-              </div>
+            <div class="form-group row calculator">
+              <label for="estimated-ethers-amount" class="col-form-label">Amount of ETH to send:</label>
+              <input type="text" readonly class="form-control-plaintext" id="estimated-ethers-amount"
+                data-bind="value: amountEthers">
             </div>
           </div>
 
@@ -87,7 +85,7 @@
         </div>
       </article>
 
-      <article class="page page-3" data-page="3">
+      <article class="page page-3" data-page="3" data-bind="visible: currentPage() == 3">
         <div class="banner-text">
           <h1>Payment</h1>
 

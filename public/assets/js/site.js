@@ -15,7 +15,7 @@ const AsiaTokenModel = function(config) {
   self.web3 = ko.observable();
   self.balanceEth = ko.observable();
   self.balanceTokens = ko.observable();
-  self.currentPage = ko.observable();
+  self.currentPage = ko.observable(1);
   self.isDone = ko.observable(false);
 
   self.contractBalanceEth = ko.observable();
@@ -99,7 +99,7 @@ const AsiaTokenModel = function(config) {
   function updateBalance(address) {
     if (!address) address = self.address();
 
-    if (!addressValidCheck(address)) return;
+    if (!addressValidCheck(address)) return new Promise(function(accept, reject) { reject(address); });
 
     var promises = [];
 
@@ -233,6 +233,8 @@ const AsiaTokenModel = function(config) {
       updateBalance().then(function(values) {
         self.balanceTokens(formatThousands(values[0]));
         self.balanceEth(formatThousands(values[1]));
+      }).catch(function(err) {
+        console.log('Error');
       });
     }
 
@@ -243,10 +245,14 @@ const AsiaTokenModel = function(config) {
 
     updateBalance(self.contractAddress).then(function(values) {
       self.contractBalanceEth(formatThousands(values[1]));
+    }).catch(function(err) {
+      console.log('Error');
     });
 
     updateBalance(self.contractCreator).then(function(values) {
       self.contractBalanceTokens(formatThousands(values[0]));
+    }).catch(function(err) {
+      console.log('Error');
     });
   }
 
