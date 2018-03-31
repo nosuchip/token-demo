@@ -27,14 +27,15 @@
       </div>
 
       <div class="user" data-bind="visible: isAddressValid()" style="display: none">
-        Address: <b data-bind="text: address"></b> |
+        Address: <a data-bind="attr: {href: addressLink}"><b data-bind="text: address"></b></a>
+        <br/>
         Balance: <span class="balance-value"><span data-bind="text: balanceTokens, css: { 'value-loading': !balanceTokens() }"></span> ASIA</span>,
         <span class="balance-value"><span data-bind="text: balanceEth, css: { 'value-loading': !balanceEth() }"></span> ETH</span>
       </div>
     </div>
 
     <div class="pages-container">
-      <article class="page page-1">
+      <article class="page page-1" data-page="1">
         <div class="banner-text">
           <h1>Welcome to <b>AsiaToken</b></h1>
           <p>The <b>future</b> begins here and now.<br/>Become a part of it. Become its <b>creator</b>.</p>
@@ -46,8 +47,9 @@
         </div>
       </article>
 
-      <article class="page page-2">
+      <article class="page page-2" data-page="2">
         <div class="banner-text">
+          <h1>Prepare order</h1>
 
           <div class="form container">
             <div class="form-group">
@@ -60,6 +62,13 @@
               <input type="text" class="form-control" id="tokens-amount" placeholder="Tokens amount you want to purchase"
                 data-bind="textInput: amountTokens, css: {error: amountTokens() && !isAmountValid()}">
             </div>
+            <div class="form-group row">
+              <label for="estimated-ethers-amount" class="col-lg-4 col-form-label">Amount of ETH to send:</label>
+              <div class="col-lg-8">
+                <input type="text" readonly class="form-control-plaintext" id="estimated-ethers-amount"
+                  data-bind="value: amountEthers">
+              </div>
+            </div>
           </div>
 
           <div class="button-container">
@@ -71,10 +80,46 @@
         </div>
       </article>
 
-      <article class="page page-3">
-        <div class="button-container">
-          <button class="btn btn-primary btn-lg button-prev"
-            data-bind="click: prevStage">‹ Back</button>
+      <article class="page page-3" data-page="3">
+        <div class="banner-text">
+          <h1>Payment</h1>
+
+          <div class="payment-status container">
+            <div class="row">
+              <div class="offset-lg-1 col-lg-8 col-md-8 col-sm-12  .col-md-offset-0">
+                <ul>
+                  <li>Send <b><span data-bind="html: amountEthers"></span> ETH</b> to
+                    address <small><b data-bind="html: contractAddress"></b></small>
+                    (or scan QR code).</li>
+                  <li>Wait while payment processed (couple of minutes).</li>
+                  <li>Receive your <b>ASIA</b> tokens.</li>
+                </ul>
+              </div>
+              <div class="col-lg-2 col-md-4 col-sm-12 qr-code" data-bind="html: addressQrCodeTag">
+              </div>
+            </div>
+
+            <div class="row progress-wrap">
+              <div class="offset-lg-1 col-lg-10">
+                <!-- This progress bar looks nice: https://codepen.io/oliverturner/pen/fwpaF -->
+
+                <div class="progress-labels">
+                  <span>Awaiting transaction</span>
+                  <span>Verifying payment</span>
+                  <span>Send ASIA tokens</span>
+                </div>
+
+                <div class="progress">
+                  <div class="progress-bar" style="width: 10%"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="button-container" data-bind="visible: isDone">
+            <a href="/" class="btn btn-primary btn-lg">Done!</a>
+          </div>
         </div>
       </article>
     </div>
@@ -83,13 +128,17 @@
   <script type="text/javascript" src="/assets/lib/jquery.min.js"></script>
   <script type="text/javascript" src="/assets/lib/alertify/alertify.min.js"></script>
   <!-- <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script> -->
-  <script type="text/javascript" src="/assets/lib/knockout/knockout-min.js"></script>
+  <script type="text/javascript" src="/assets/lib/knockout-min.js"></script>
+  <script type="text/javascript" src="/assets/lib/qrcode.min.js"></script>
+  <script type="text/javascript" src="/assets/lib/bignumber.min.js"></script>
 
   <script type="text/javascript" src="/assets/js/site.js"></script>
 
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-      window.model = new AsiaTokenModel();
+      window.model = new AsiaTokenModel({
+        contractAddress: "0xa2156400a38a986728b52c769c00ad6975fe7b46"
+      });
     });
   </script>
 
