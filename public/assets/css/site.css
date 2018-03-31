@@ -111,17 +111,25 @@ body .account {
   right: 10px;
 }
 
-
-body .account .user {
+body .account .user,
+body .account .common {
   font-size: 12px;
   font-weight: 300;
 }
 
-body .account .user .balance-value {
+body .account .common {
+  border-bottom: solid 1px white;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+body .account .user .balance-value,
+body .account .common .balance-value {
   font-weight: bold;
 }
 
-body .account .user .balance-value > span.value-loading:after {
+body .account .user .balance-value > span.value-loading:after,
+body .account .common .balance-value > span.value-loading:after {
   content: '...';
   animation: spin 2s infinite linear;
 }
@@ -131,14 +139,14 @@ body .account .user .balance-value > span.value-loading:after {
   to { transform: rotate(359deg); }
 }
 
-body .account .user a,
-body .account .user a:hover,
-body .account .user a:focus {
+body .account a,
+body .account a:hover,
+body .account a:focus {
   text-decoration: none;
   color: #80b7f3;
 }
 
-body .account .user a:hover {
+body .account a:hover {
   color: #52a0f5;
 }
 

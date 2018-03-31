@@ -21,13 +21,20 @@
   <div id="root">
 
     <div class="account">
+      <div class="common contract">
+        Contract address: <a data-bind="attr: {href: contractLink}"><b data-bind="text: contractAddress"></b></a>
+        <br/>
+        Balance: <span class="balance-value"><span data-bind="text: contractBalanceTokens, css: { 'value-loading': !contractBalanceTokens() }"></span> ASIA</span>,
+        <span class="balance-value"><span data-bind="text: contractBalanceEth, css: { 'value-loading': !contractBalanceEth() }"></span> ETH</span>
+      </div>
+
       <div class="anonymous" data-bind="visible: !isAddressValid()" style="display: none">
         <button class="btn btn-success btn-sm button-auth"
           data-bind="click: authenticate">Check my balance</button>
       </div>
 
       <div class="user" data-bind="visible: isAddressValid()" style="display: none">
-        Address: <a data-bind="attr: {href: addressLink}"><b data-bind="text: address"></b></a>
+        Your address: <a data-bind="attr: {href: addressLink}"><b data-bind="text: address"></b></a>
         <br/>
         Balance: <span class="balance-value"><span data-bind="text: balanceTokens, css: { 'value-loading': !balanceTokens() }"></span> ASIA</span>,
         <span class="balance-value"><span data-bind="text: balanceEth, css: { 'value-loading': !balanceEth() }"></span> ETH</span>
@@ -137,7 +144,8 @@
   <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
       window.model = new AsiaTokenModel({
-        contractAddress: "0xa2156400a38a986728b52c769c00ad6975fe7b46"
+        contractAddress: "0xa2156400a38a986728b52c769c00ad6975fe7b46",
+        contractCreator: "0xf011b485df2a66a3019dea82e1ebbf7c716443a1"
       });
     });
   </script>

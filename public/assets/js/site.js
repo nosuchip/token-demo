@@ -3,6 +3,7 @@ const AsiaTokenModel = function(config) {
 
   self.pollTimeout = 5000;
   self.contractAddress = config.contractAddress;
+  self.contractCreator = config.contractCreator;
   self.etherscanApiKey = "81R5Q6RAB81XTMFXCESI8FPS2BYEZ92RVG";
   self.tokenPrice = 0.1;  // ETH
   self.tokenDecimals = 8;  // ETH
@@ -17,8 +18,12 @@ const AsiaTokenModel = function(config) {
   self.currentPage = ko.observable();
   self.isDone = ko.observable(false);
 
+  self.contractBalanceEth = ko.observable();
+  self.contractBalanceTokens = ko.observable();
+
+
   self.isAddressValid = ko.computed(function() {
-    return self.address() && /^(0x){0,1}[0-9a-fA-F]{40}$/i.test(self.address());
+    return addressValidCheck(self.address());
   });
 
   self.isAmountValid = ko.computed(function() {
@@ -38,6 +43,10 @@ const AsiaTokenModel = function(config) {
     if (!self.isAddressValid()) return null;
 
     return 'https://rinkeby.etherscan.io/address/' + self.address();
+  });
+
+  self.contractLink = ko.computed(function() {
+    return 'https://rinkeby.etherscan.io/token/' + self.contractAddress;
   });
 
   self.addressQrCodeTag = ko.computed(function() {
@@ -79,45 +88,61 @@ const AsiaTokenModel = function(config) {
     });
   }
 
-  function updateBalance() {
-    if (!self.isAddressValid()) return;
+  function formatThousands(value) {
+    return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
 
-    (function() {
+  function addressValidCheck(address) {
+    return address && /^(0x){0,1}[0-9a-fA-F]{40}$/i.test(address);
+  }
+
+  function updateBalance(address) {
+    if (!address) address = self.address();
+
+    if (!addressValidCheck(address)) return;
+
+    var promises = [];
+
+    var p1 = new Promise(function(accept, reject) {
       const url = 'https://api-rinkeby.etherscan.io/api';
       const params = {
         module: 'account',
         action: 'tokenbalance',
         contractaddress: self.contractAddress,
-        address: self.address(),
+        address: address,
         tag: 'latest',
       };
 
       $.getJSON(url, params, function(resp) {
         if (resp.status === '1' && resp.result) {
           const tokens = new BigNumber(resp.result).div(10**self.tokenDecimals).toNumber();
-          self.balanceTokens(tokens);
+          accept(tokens);
         };
       });
-    })();
+    });
 
-    (function() {
+    var p2 = new Promise(function(accept, reject) {
       const url = 'https://api-rinkeby.etherscan.io/api';
       const params = {
         module: 'account',
         action: 'balance',
-        address: self.address(),
+        address: address,
         tag: 'latest',
       };
 
       $.getJSON(url, params, function(resp) {
         if (resp.status === '1' && resp.result) {
           var eth = new BigNumber(web3.fromWei(resp.result)).toFixed(3);
-          self.balanceEth(eth);
+          accept(eth);
         }
       });
-    })();
+    });
 
-
+    return new Promise(function(accept, reject) {
+      Promise.all([p1, p2]).then(function(values) {
+        accept(values);
+      });
+    });
   }
 
   function estimateEthersAmount(value) {
@@ -204,10 +229,25 @@ const AsiaTokenModel = function(config) {
   }
 
   function bind() {
-    self.address.subscribe(updateBalance);
-    self.isDone.subscribe(updateBalance);
+    var balanceUpdater = function() {
+      updateBalance().then(function(values) {
+        self.balanceTokens(formatThousands(values[0]));
+        self.balanceEth(formatThousands(values[1]));
+      });
+    }
+
+    self.address.subscribe(balanceUpdater);
+    self.isDone.subscribe(balanceUpdater);
     self.amountTokens.subscribe(estimateEthersAmount);
     self.currentPage.subscribe(pageChanged);
+
+    updateBalance(self.contractAddress).then(function(values) {
+      self.contractBalanceEth(formatThousands(values[1]));
+    });
+
+    updateBalance(self.contractCreator).then(function(values) {
+      self.contractBalanceTokens(formatThousands(values[0]));
+    });
   }
 
   function init() {
