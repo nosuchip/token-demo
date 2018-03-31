@@ -5,7 +5,11 @@
 	<title>AsiaToken sale</title>
 	<link rel="stylesheet" href="/assets/css/reset.css">
 	<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/assets/css/site.css">
+	<link rel="stylesheet" href="/assets/lib/alertify/alertify.min.css">
+	<link rel="stylesheet" href="/assets/lib/alertify/themes/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/css/site.css">
+
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 	<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -14,16 +18,80 @@
 
 <body>
 
-  <div class="banner-text">
-    <h1>Welcome to <b>AsiaToken</b></h1>
-    <p>The future begins here and now.<br/>Become a part of it. Become its <b>creator</b>.</p>
+  <div id="root">
 
-    <div class="button-container">
-      <button class="btn btn-primary btn-lg button-start">Purchase an AsiaToken</button>
+    <div class="account">
+      <div class="anonymous" data-bind="visible: !isAddressValid()" style="display: none">
+        <button class="btn btn-success btn-sm button-auth"
+          data-bind="click: authenticate">Check my balance</button>
+      </div>
+
+      <div class="user" data-bind="visible: isAddressValid()" style="display: none">
+        Address: <b data-bind="text: address"></b> |
+        Balance: <span class="balance-value"><span data-bind="text: balanceTokens, css: { 'value-loading': !balanceTokens() }"></span> ASIA</span>,
+        <span class="balance-value"><span data-bind="text: balanceEth, css: { 'value-loading': !balanceEth() }"></span> ETH</span>
+      </div>
     </div>
-  </div>
 
-  <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+    <div class="pages-container">
+      <article class="page page-1">
+        <div class="banner-text">
+          <h1>Welcome to <b>AsiaToken</b></h1>
+          <p>The <b>future</b> begins here and now.<br/>Become a part of it. Become its <b>creator</b>.</p>
+
+          <div class="button-container">
+            <button class="btn btn-primary btn-lg button-start"
+              data-bind="click: nextStage">Purchase an AsiaToken ›</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="page page-2">
+        <div class="banner-text">
+
+          <div class="form container">
+            <div class="form-group">
+              <label for="eth-address">Your address:</label>
+              <input type="text" class="form-control" id="eth-address" placeholder="Your Ethereum address"
+                data-bind="textInput: address, css: {error: address() && !isAddressValid()}">
+            </div>
+            <div class="form-group">
+              <label for="tokens-amount">Tokens amount</label>
+              <input type="text" class="form-control" id="tokens-amount" placeholder="Tokens amount you want to purchase"
+                data-bind="textInput: amountTokens, css: {error: amountTokens() && !isAmountValid()}">
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button class="btn btn-primary btn-lg button-prev"
+              data-bind="click: prevStage">‹ Back</button>
+            <button class="btn btn-primary btn-lg button-next"
+              data-bind="click: nextStage, enable: isPreorderValid">Review order ›</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="page page-3">
+        <div class="button-container">
+          <button class="btn btn-primary btn-lg button-prev"
+            data-bind="click: prevStage">‹ Back</button>
+        </div>
+      </article>
+    </div>
+  </div>  <!-- /.root -->
+
+  <script type="text/javascript" src="/assets/lib/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/lib/alertify/alertify.min.js"></script>
+  <!-- <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script> -->
+  <script type="text/javascript" src="/assets/lib/knockout/knockout-min.js"></script>
+
+  <script type="text/javascript" src="/assets/js/site.js"></script>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      window.model = new AsiaTokenModel();
+    });
+  </script>
 
 </body>
 </html>

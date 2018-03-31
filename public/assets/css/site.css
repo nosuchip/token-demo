@@ -19,6 +19,33 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.ajs-modal .ajs-dialog .ajs-body input {
+  width: 100%;
+}
+
+body .pages-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+body .pages-container article.page {
+  position: absolute;
+  width: 100%;
+  top: 10%;
+}
+
+body .pages-container article.page-1 {
+  left: 0%;
+}
+
+body .pages-container article.page-2 {
+  left: 100%;
+}
+
+body .pages-container article.page-3 {
+  left: 100%;
+}
+
 body .banner-text {
   text-align: center;
   padding: 20% 0 15% 0;
@@ -34,7 +61,6 @@ body .banner-text h1 {
   animation: bounceIn;
   animation-duration: 2s;
 }
-
 
 @keyframes bounceIn{
   0%{
@@ -62,11 +88,63 @@ body .banner-text p {
   line-height: 35px;
   letter-spacing: 3px;
   margin-bottom: 55px;
-  animation: bounceLeft;
-  animation-duration: 2s;
 }
 
 body .banner-text .button-container .button-start {
   width: 300px;
   height: 60px;
 }
+
+body .banner-text .button-container .button-prev,
+body .banner-text .button-container .button-prev:focus,
+body .banner-text .button-container .button-prev:active,
+body .banner-text .button-container .button-prev:active:focus {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+body .account {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+body .account .user {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+body .account .user .balance-value {
+  font-weight: bold;
+}
+
+body .account .user .balance-value > span.value-loading:after {
+  content: '...';
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
+
+body .pages-container article.page .form.container {
+  padding: 0 80px;
+  text-align: left;
+}
+
+body .pages-container article.page .form.container {
+  font-size: 25px;
+}
+
+body .pages-container article.page .form.container input.error,
+body .pages-container article.page .form.container input.error:focus,
+body .pages-container article.page .form.container input.error:active,
+body .pages-container article.page .form.container input.error:active:focus {
+  border-color: rgb(210, 128, 128);
+  background-color: rgb(249, 153, 153);
+}
+
