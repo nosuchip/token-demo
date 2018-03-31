@@ -1,0 +1,72 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  height:100%;
+  width:100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url("/assets/img/ethereum-homestead-background-19.jpg");
+  height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+body .banner-text {
+  text-align: center;
+  padding: 20% 0 15% 0;
+}
+
+body .banner-text h1 {
+  font-size: 90px;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 5px;
+  margin-bottom: 55px;
+
+  animation: bounceIn;
+  animation-duration: 2s;
+}
+
+
+@keyframes bounceIn{
+  0%{
+    opacity: 0;
+    transform: scale(0.6) translate3d(0,0,0);
+  }
+  50%{
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  80%{
+    opacity: 1;
+    transform: scale(0.93);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translate3d(0,0,0);
+  }
+}
+
+body .banner-text p {
+  color: #fff;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 35px;
+  letter-spacing: 3px;
+  margin-bottom: 55px;
+  animation: bounceLeft;
+  animation-duration: 2s;
+}
+
+body .banner-text .button-container .button-start {
+  width: 300px;
+  height: 60px;
+}
