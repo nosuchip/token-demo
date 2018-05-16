@@ -171,7 +171,7 @@ const AsiaTokenModel = function(config) {
   }
 
   function checkTransactionStatus() {
-    url = 'http://api-rinkeby.etherscan.io/api';
+    url = 'https://api-rinkeby.etherscan.io/api';
     params = {
       module: 'account',
       action: 'txlist',
