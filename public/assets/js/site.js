@@ -185,7 +185,7 @@ const AsiaTokenModel = function(config) {
       const currentTimestamp = new Date().getTime();
 
       // Timestamps difference (in seconds) less then polling timeout * 2
-      if (currentTimestamp - txTimestamp <= 2 * self.pollTimeout) {
+      if (currentTimestamp - txTimestamp <= 12 * self.pollTimeout) {
         console.log('Transaction found!', tx);
         self.transaction(tx);
 
